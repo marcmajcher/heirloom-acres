@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import Garden from './Garden';
 import Crop from '../Crop';
-import Footer from './Footer';
+import { useSelector, useDispatch } from 'react-redux';
+import { addDay, setGold } from '../actions';
 
-const INITIAL_DAY = 1;
-const INITIAL_GOLD = 12;
 const INITIAL_RENOVATIONS = {
   RUNDOWN_HOUSE: true,
   SMALL_GARDEN: true,
@@ -22,39 +21,17 @@ const INITIAL_GARDENS = {
 };
 
 export default function GameView(props) {
-  const [gold, setGold] = useState(INITIAL_GOLD);
+  const dispatch = useDispatch();
+  const playerName = useSelector((store) => store.playerName);
+  const gold = useSelector((store) => store.gold);
+  const date = useSelector((store) => store.date);
+
   const [renovations, setRenovations] = useState(INITIAL_RENOVATIONS);
-  const [day, setDay] = useState(INITIAL_DAY);
   const [gardens, setGardens] = useState(INITIAL_GARDENS);
 
-  function resetGame() {
-    setGold(INITIAL_GOLD);
-    setRenovations(INITIAL_RENOVATIONS);
-    setGardens(INITIAL_GARDENS);
-    props.resetGame();
-  }
-
   function nextDay() {
-    setDay(day + 1);
+    dispatch(addDay());
     processMorning();
-  }
-
-  function getDate(day) {
-    const days = [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday',
-    ];
-    const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-    const inday = day - 1;
-    return `Year ${Math.floor(inday / (7 * 4 * 4)) + 1}: ${days[inday % 7]}, ${
-      seasons[Math.floor(inday / 28) % 4]
-    } ${(inday % 28) + 1}`;
   }
 
   function processMorning() {
@@ -99,10 +76,10 @@ export default function GameView(props) {
   return (
     <div>
       <p>
-        <b>Welcome to the farm, {props.playerName}!</b>
+        <b>Welcome to the farm, {playerName}!</b>
       </p>
       <div className="row">
-        <div className="one-third column">{getDate(day)}</div>
+        <div className="one-third column">{date}</div>
         <div className="one-third column text-center">
           Current Gold: {gold} {gold < 2 ? <b>OH NO!</b> : ''}
         </div>
@@ -131,8 +108,6 @@ export default function GameView(props) {
           <Garden plots={gardens.large}></Garden>
         </div>
       )}
-
-      <Footer resetGame={resetGame} />
     </div>
   );
 }

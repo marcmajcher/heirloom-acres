@@ -1,27 +1,28 @@
-import React, { useState } from 'react';
+import React from 'react';
 import StartGame from './StartGame';
 import Game from './Game';
+import { useDispatch, useSelector } from 'react-redux';
+import { setName, startGame } from '../actions';
+import Footer from './Footer';
 
 export default function App() {
-  const [playing, setPlaying] = useState(false);
-  const [playerName, setPlayerName] = useState('');
+  const dispatch = useDispatch();
+  const playing = useSelector((store) => store.playing);
+  const playerName = useSelector((store) => store.playerName);
 
-  function resetGame() {
-    setPlayerName('');
-    setPlaying(false);
-  }
   function handleChangeName(e) {
-    setPlayerName(e.target.value);
+    dispatch(setName(e.target.value));
   }
+
   function handleNameButton() {
-    setPlaying(true);
+    dispatch(startGame());
   }
 
   return (
     <div className="container">
       <h1>Heirloom Acres</h1>
       {playing ? (
-        <Game playerName={playerName} resetGame={resetGame}></Game>
+        <Game/>
       ) : (
         <StartGame
           playerName={playerName}
@@ -29,6 +30,7 @@ export default function App() {
           handleNameButton={handleNameButton}
         ></StartGame>
       )}
+      <Footer />
     </div>
   );
 }
