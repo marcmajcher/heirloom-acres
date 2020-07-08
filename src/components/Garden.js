@@ -4,7 +4,13 @@ import Plot from './Plot';
 export default function Garden(props) {
   return (
     <ul>
-      {props.plots.map(e => <Plot key={Math.random()} plot={e}></Plot> )}
+      {props.plots.map((e, i) => (
+        <Plot
+          key={i}
+          plantCrop={(cropId) => props.plantCrop(props.gardenId, i, cropId)}
+          plot={e}
+        ></Plot>
+      ))}
     </ul>
   );
 }

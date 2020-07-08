@@ -39,7 +39,7 @@ const CROPS = {
 export default class Crop {
   constructor(type) {
     if (type && type in CROPS) {
-      Object.assign(this, ...CROPS[type])
+      Object.assign(this, ...CROPS[type]);
     } else {
       this.name = 'empty';
       this.id = this.cost = this.maturity = this.yield = undefined;
@@ -48,5 +48,9 @@ export default class Crop {
 
   static cropInfo() {
     return CROPS;
+  }
+
+  static cropById(id) {
+    return Object.values(CROPS).find((e) => (e.id === id));
   }
 }

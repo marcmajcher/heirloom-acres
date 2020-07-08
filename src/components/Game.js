@@ -55,8 +55,17 @@ export default function GameView(props) {
       seasons[Math.floor(inday / 28) % 4]
     } ${(inday % 28) + 1}`;
   }
-  
+
   function processMorning() {}
+
+  function plantCrop(gardenId, plotNumber, cropId) {
+    const crop = Crop.cropById(cropId);
+    const newGardens = { ...gardens };
+    newGardens[gardenId] = [...newGardens[gardenId]];
+    newGardens[gardenId][plotNumber] = { crop, growth: 0 };
+    setGardens(newGardens);
+    setGold(gold - crop.cost);
+  }
 
   return (
     <div>
@@ -71,7 +80,11 @@ export default function GameView(props) {
       {renovations.SMALL_GARDEN && (
         <div>
           <h4>Small Garden</h4>
-          <Garden plots={gardens.small}></Garden>
+          <Garden
+            plots={gardens.small}
+            gardenId="small"
+            plantCrop={plantCrop}
+          ></Garden>
         </div>
       )}
 
