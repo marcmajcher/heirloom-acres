@@ -1,15 +1,14 @@
 import React from 'react';
 import Plot from './Plot';
-
 export default function Garden(props) {
   return (
     <div className="row">
-      {props.plots.map((e, i) => (
+      {props.plots.map((plot, cropId) => (
         <Plot
-          key={i}
-          plantCrop={(cropId) => props.plantCrop(props.gardenId, i, cropId)}
-          harvest={() => props.harvest(props.gardenId, i)}
-          plot={e}
+          key={cropId}
+          gardenId={props.gardenId}
+          plotId={cropId}
+          plot={plot}
         ></Plot>
       ))}
     </div>

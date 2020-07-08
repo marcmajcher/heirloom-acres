@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import Crop from '../Crop';
+import { useDispatch, useSelector } from 'react-redux';
+import { harvest, plantCrop } from '../actions';
 
-export default function Plot(props) {
-  const [selectedCrop, setSelectedCrop] = useState(undefined);
-  const crop = props.plot.crop;
+export default function Plot({ gardenId, plotId, plot }) {
+  const [selectedCropId, setSelectedCropId] = useState(undefined);
+
+  const crop = plot.crop;
   const cropInfo = Crop.cropInfo();
+  const dispatch = useDispatch();
+  const gold = useSelector((s) => s.gold);
 
   function handleCropChange(e) {
-    setSelectedCrop(parseInt(e.target.value));
+    setSelectedCropId(parseInt(e.target.value));
+  }
+
+  function handlePlantCrop() {
+    const crop = Crop.cropById(selectedCropId);
+    if (gold >= crop.cost) {
+      dispatch(plantCrop(gardenId, plotId, crop));
+    }
   }
 
   return (
@@ -23,18 +35,20 @@ export default function Plot(props) {
               </option>
             ))}
           </select>{' '}
-          <button onClick={() => props.plantCrop(selectedCrop)}>
-            Plant Crop
-          </button>
+          <button onClick={handlePlantCrop}>Plant Crop</button>
         </div>
       ) : (
-      <div>
-        {props.plot.growth >= crop.maturity ?
-        <button onClick={props.harvest}>HARVEST</button>
-        :
-        <p>Growth: {props.plot.growth} / {crop.maturity}</p>
-      }
-      </div>
+        <div>
+          {plot.growth >= crop.maturity ? (
+            <button onClick={() => dispatch(harvest(gardenId, plotId))}>
+              HARVEST
+            </button>
+          ) : (
+            <p>
+              Growth: {plot.growth} / {crop.maturity}
+            </p>
+          )}
+        </div>
       )}
     </div>
   );
