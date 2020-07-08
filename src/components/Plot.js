@@ -28,7 +28,13 @@ export default function Plot(props) {
           </button>
         </div>
       ) : (
-      <div>Growth: {props.plot.growth}</div>
+      <div>
+        {props.plot.growth >= crop.maturity ?
+        <button onClick={props.harvest}>HARVEST</button>
+        :
+        <p>Growth: {props.plot.growth} / {crop.maturity}</p>
+      }
+      </div>
       )}
     </li>
   );

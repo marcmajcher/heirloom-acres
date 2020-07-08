@@ -72,13 +72,27 @@ export default function GameView(props) {
     }
   }
 
-  function plantCrop(gardenId, plotNumber, cropId) {
-    const crop = Crop.cropById(cropId);
+  function harvest(gardenId, plotNumber) {
     const newGardens = { ...gardens };
     newGardens[gardenId] = [...newGardens[gardenId]];
-    newGardens[gardenId][plotNumber] = { crop, growth: 0 };
+
+    const cropYield = gardens[gardenId][plotNumber].crop.yield;
+    const harvestGold = Math.floor(Math.random() * cropYield) + 1;
+    setGold(gold + harvestGold);
+
+    newGardens[gardenId][plotNumber] = EMPTY_PLOT();
     setGardens(newGardens);
-    setGold(gold - crop.cost);
+  }
+
+  function plantCrop(gardenId, plotNumber, cropId) {
+    const crop = Crop.cropById(cropId);
+    if (gold >= crop.cost) {
+      const newGardens = { ...gardens };
+      newGardens[gardenId] = [...newGardens[gardenId]];
+      newGardens[gardenId][plotNumber] = { crop, growth: 0 };
+      setGardens(newGardens);
+      setGold(gold - crop.cost);
+    }
   }
 
   return (
@@ -98,6 +112,7 @@ export default function GameView(props) {
             plots={gardens.small}
             gardenId="small"
             plantCrop={plantCrop}
+            harvest={harvest}
           ></Garden>
         </div>
       )}

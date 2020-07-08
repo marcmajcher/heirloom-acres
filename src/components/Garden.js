@@ -8,6 +8,7 @@ export default function Garden(props) {
         <Plot
           key={i}
           plantCrop={(cropId) => props.plantCrop(props.gardenId, i, cropId)}
+          harvest={() => props.harvest(props.gardenId, i)}
           plot={e}
         ></Plot>
       ))}
