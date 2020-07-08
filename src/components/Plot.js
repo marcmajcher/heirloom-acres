@@ -11,8 +11,8 @@ export default function Plot(props) {
   }
 
   return (
-    <li>
-      <b>{crop.name}</b>{' '}
+    <div className="three columns text-center">
+      <h5>{crop.name}</h5>{' '}
       {crop.name === 'empty' ? (
         <div>
           <select onChange={handleCropChange}>
@@ -36,6 +36,6 @@ export default function Plot(props) {
       }
       </div>
       )}
-    </li>
+    </div>
   );
 }

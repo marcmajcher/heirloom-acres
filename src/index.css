@@ -1,0 +1,25 @@
+h4 {
+  text-align: center;
+  background-color: oldlace;
+  padding: 8px;
+}
+
+hr {
+  margin: 8px 0;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 12%;
+  width: 75%;
+  padding: 16px;
+}

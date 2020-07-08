@@ -3,7 +3,7 @@ import Plot from './Plot';
 
 export default function Garden(props) {
   return (
-    <ul>
+    <div className="row">
       {props.plots.map((e, i) => (
         <Plot
           key={i}
@@ -12,6 +12,6 @@ export default function Garden(props) {
           plot={e}
         ></Plot>
       ))}
-    </ul>
+    </div>
   );
 }

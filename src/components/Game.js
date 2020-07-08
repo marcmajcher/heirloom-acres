@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Garden from './Garden';
 import Crop from '../Crop';
+import Footer from './Footer';
 
 const INITIAL_DAY = 1;
 const INITIAL_GOLD = 12;
@@ -100,9 +101,16 @@ export default function GameView(props) {
       <p>
         <b>Welcome to the farm, {props.playerName}!</b>
       </p>
-      <p>{getDate(day)}</p>
-      <p>Current Gold: {gold}</p>
-      <button onClick={nextDay}>Go to Next Day</button>
+      <div className="row">
+        <div className="one-third column">{getDate(day)}</div>
+        <div className="one-third column text-center">
+          Current Gold: {gold} {gold < 2 ? <b>OH NO!</b> : ''}
+        </div>
+        <div className="one-third column text-right">
+          <button onClick={nextDay}>Go to Next Day</button>
+        </div>
+      </div>
+
       <hr />
 
       {renovations.SMALL_GARDEN && (
@@ -124,8 +132,7 @@ export default function GameView(props) {
         </div>
       )}
 
-      <hr />
-      <button onClick={resetGame}>Reset Game</button>
+      <Footer resetGame={resetGame} />
     </div>
   );
 }

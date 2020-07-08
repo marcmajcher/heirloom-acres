@@ -3,8 +3,8 @@ import StartGame from './StartGame';
 import Game from './Game';
 
 export default function App() {
-  const [playing, setPlaying] = useState(true) // only for testing (false);
-  const [playerName, setPlayerName] = useState('Marc') // only for testing ('');
+  const [playing, setPlaying] = useState(false);
+  const [playerName, setPlayerName] = useState('');
 
   function resetGame() {
     setPlayerName('');
