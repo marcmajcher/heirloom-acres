@@ -10,9 +10,6 @@ export function plantCrop(gardenId, plotId, crop) {
 export function resetGame() {
   return { type: 'RESET_GAME' };
 }
-export function setGold(amount) {
-  return { type: 'SET_GOLD', amount };
-}
 export function setName(name) {
   return { type: 'SET_PLAYER_NAME', name };
 }

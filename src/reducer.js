@@ -17,24 +17,6 @@ const INITIAL_GARDENS = {
   greenhouse: [EMPTY_PLOT(), EMPTY_PLOT(), EMPTY_PLOT(), EMPTY_PLOT()],
 };
 
-const getDate = (day) => {
-  const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-  const inday = day - 1;
-  return `Year ${Math.floor(inday / (7 * 4 * 4)) + 1}: ${days[inday % 7]}, ${
-    seasons[Math.floor(inday / 28) % 4]
-  } ${(inday % 28) + 1}`;
-};
-
 const DEFAULT_STATE = {
   date: getDate(1),
   day: 1,
@@ -59,26 +41,12 @@ export default function reducer(state = DEFAULT_STATE, action) {
         gold: state.gold - action.crop.cost,
       };
     case 'NEXT_DAY':
-      const dayGardens = { ...state.gardens };
-      for (const gardenId in dayGardens) {
-        dayGardens[gardenId] = dayGardens[gardenId].map((plot) => {
-          const newPlot = { ...plot };
-          if (
-            newPlot.crop.id !== undefined &&
-            newPlot.growth < newPlot.crop.maturity
-          ) {
-            newPlot.growth += 1;
-          }
-          return newPlot;
-        });
-      }
       return {
         ...state,
-        gardens: dayGardens,
+        gardens: growCrops(state),
         day: state.day + 1,
         date: getDate(state.day + 1),
       };
-
     case 'RESET_GAME':
       return DEFAULT_STATE;
     case 'SET_GOLD':
@@ -90,6 +58,43 @@ export default function reducer(state = DEFAULT_STATE, action) {
     default:
       return state;
   }
+}
+
+// helper functions
+
+function getDate(day) {
+  const days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
+
+  const inday = day - 1;
+  return `Year ${Math.floor(inday / (7 * 4 * 4)) + 1}: ${days[inday % 7]}, ${
+    seasons[Math.floor(inday / 28) % 4]
+  } ${(inday % 28) + 1}`;
+}
+
+function growCrops(state) {
+  const gardens = { ...state.gardens };
+  for (const gardenId in gardens) {
+    gardens[gardenId] = gardens[gardenId].map((plot) => {
+      const newPlot = { ...plot };
+      if (
+        newPlot.crop.id !== undefined &&
+        newPlot.growth < newPlot.crop.maturity
+      ) {
+        newPlot.growth += 1;
+      }
+      return newPlot;
+    });
+  }
+  return gardens;
 }
 
 function harvest(state, action) {

@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setName, startGame } from '../actions';
 
 export default function StartGame(props) {
+  const [playerName, setPlayerName] = useState('');
+  const dispatch = useDispatch();
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    dispatch(setName(playerName));
+    dispatch(startGame());
+  }
+
   return (
     <div>
-      <form onSubmit={props.handleNameButton}>
+      <form onSubmit={handleSubmit}>
         Please tell me your name:{' '}
         <input
-          type="text"
-          value={props.playerName}
-          onChange={props.handleChangeName}
+          value={playerName}
+          onChange={(e) => setPlayerName(e.target.value)}
         />{' '}
-        <input type="submit" value="OK"/>
+        <input type="submit" value="OK" />
       </form>
     </div>
   );

@@ -5,11 +5,7 @@ import { nextDay } from '../actions';
 
 export default function GameView(props) {
   const dispatch = useDispatch();
-  const playerName = useSelector((store) => store.playerName);
-  const gold = useSelector((store) => store.gold);
-  const date = useSelector((store) => store.date);
-  const renovations = useSelector((store) => store.renovations);
-  const gardens = useSelector((store) => store.gardens);
+  const { date, gold, playerName, gardens, renovations } = useSelector(store => store);
 
   return (
     <div>

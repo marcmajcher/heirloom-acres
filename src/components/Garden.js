@@ -3,11 +3,11 @@ import Plot from './Plot';
 export default function Garden(props) {
   return (
     <div className="row">
-      {props.plots.map((plot, cropId) => (
+      {props.plots.map((plot, plotId) => (
         <Plot
-          key={cropId}
+          key={plotId}
           gardenId={props.gardenId}
-          plotId={cropId}
+          plotId={plotId}
           plot={plot}
         ></Plot>
       ))}
