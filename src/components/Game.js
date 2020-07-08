@@ -1,11 +1,13 @@
 import React from 'react';
 import Garden from './Garden';
 import { useSelector, useDispatch } from 'react-redux';
-import { nextDay } from '../actions';
+import { nextDay } from '../lib/actions';
 
 export default function GameView(props) {
   const dispatch = useDispatch();
-  const { date, gold, playerName, gardens, renovations } = useSelector(store => store);
+  const { date, gold, playerName, gardens, renovations } = useSelector(
+    (store) => store
+  );
 
   return (
     <div>
@@ -23,18 +25,34 @@ export default function GameView(props) {
       </div>
 
       <hr />
-
-      {renovations.SMALL_GARDEN && (
+      {renovations.RUNDOWN_HOUSE ? (
+        <div>
+          <h4>Rundown Farmhouse</h4>
+          <div className="row">
+            <div className="six columns">
+              <p>Visitors: none</p>
+            </div>
+            <div className="six columns">
+              <button className="u-pull-right">Upgrade</button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        'Something is terribly wrong.'
+      )}
+      {renovations.SMALL_GARDEN ? (
         <div>
           <h4>Small Garden</h4>
           <Garden plots={gardens.small} gardenId="small"></Garden>
         </div>
+      ) : (
+        'Something is terribly wrong.'
       )}
 
       {renovations.LARGE_GARDEN && (
         <div>
           <h4>Large Garden</h4>
-          <Garden plots={gardens.large}></Garden>
+          <Garden plots={gardens.large} gardenId="large"></Garden>
         </div>
       )}
     </div>

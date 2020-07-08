@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Crop from '../Crop';
+import Crop from '../model/Crop';
 import { useDispatch, useSelector } from 'react-redux';
-import { harvest, plantCrop } from '../actions';
+import { harvest, plantCrop } from '../lib/actions';
 
 export default function Plot({ gardenId, plotId, plot }) {
   const [selectedCropId, setSelectedCropId] = useState(undefined);
@@ -12,7 +12,7 @@ export default function Plot({ gardenId, plotId, plot }) {
   const cropInfo = Crop.cropInfo();
 
   function handleCropChange(e) {
-    setSelectedCropId(parseInt(e.target.value));
+    setSelectedCropId(e.target.value ? parseInt(e.target.value) : undefined);
   }
 
   function handlePlantCrop() {
@@ -29,9 +29,9 @@ export default function Plot({ gardenId, plotId, plot }) {
       {crop.name === 'empty' ? (
         <div>
           <select onChange={handleCropChange}>
-            <option> -- choose -- </option>
+            <option value=""> -- choose -- </option>
             {Object.values(cropInfo).map((e) => (
-              <option value={e.id} key={e.id}>
+              <option value={e.id} key={e.id} disabled={e.cost > gold}>
                 {e.name} - Cost {e.cost}
               </option>
             ))}

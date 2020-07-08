@@ -1,4 +1,5 @@
-import Crop from './Crop';
+import Crop from '../model/Crop';
+import { getDate, harvest, plantCrop, growCrops } from '../lib/util';
 
 const START_GOLD = 12;
 const INITIAL_RENOVATIONS = {
@@ -22,8 +23,8 @@ const DEFAULT_STATE = {
   day: 1,
   gardens: INITIAL_GARDENS,
   gold: START_GOLD,
-  playerName: '',
-  playing: false,
+  playerName: 'Marc', //'',
+  playing: true, //false,
   renovations: INITIAL_RENOVATIONS,
 };
 
@@ -58,59 +59,4 @@ export default function reducer(state = DEFAULT_STATE, action) {
     default:
       return state;
   }
-}
-
-// helper functions
-
-function getDate(day) {
-  const days = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-  const seasons = ['Spring', 'Summer', 'Fall', 'Winter'];
-
-  const inday = day - 1;
-  return `Year ${Math.floor(inday / (7 * 4 * 4)) + 1}: ${days[inday % 7]}, ${
-    seasons[Math.floor(inday / 28) % 4]
-  } ${(inday % 28) + 1}`;
-}
-
-function growCrops(state) {
-  const gardens = { ...state.gardens };
-  for (const gardenId in gardens) {
-    gardens[gardenId] = gardens[gardenId].map((plot) => {
-      const newPlot = { ...plot };
-      if (
-        newPlot.crop.id !== undefined &&
-        newPlot.growth < newPlot.crop.maturity
-      ) {
-        newPlot.growth += 1;
-      }
-      return newPlot;
-    });
-  }
-  return gardens;
-}
-
-function harvest(state, action) {
-  const { gardenId, plotId } = action;
-  const newGardens = { ...state.gardens };
-  newGardens[gardenId] = [...newGardens[gardenId]];
-  const cropYield = newGardens[gardenId][plotId].crop.yield;
-  const newGold = state.gold + Math.floor(Math.random() * cropYield) + 1;
-  newGardens[gardenId][plotId] = EMPTY_PLOT();
-  return [newGardens, newGold];
-}
-
-function plantCrop(state, action) {
-  const { gardenId, plotId, crop } = action;
-  const newGardens = { ...state.gardens };
-  newGardens[gardenId] = [...newGardens[gardenId]];
-  newGardens[gardenId][plotId] = { crop: crop, growth: 0 };
-  return newGardens;
 }

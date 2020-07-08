@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setName, startGame } from '../actions';
+import { setName, startGame } from '../lib/actions';
 
 export default function StartGame(props) {
   const [playerName, setPlayerName] = useState('');
