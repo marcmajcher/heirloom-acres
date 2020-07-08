@@ -37,6 +37,7 @@ export default function GameView(props) {
     setDay(day + 1);
     processMorning();
   }
+
   function getDate(day) {
     const days = [
       'Monday',
@@ -54,6 +55,7 @@ export default function GameView(props) {
       seasons[Math.floor(inday / 28) % 4]
     } ${(inday % 28) + 1}`;
   }
+  
   function processMorning() {}
 
   return (

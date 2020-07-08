@@ -1,25 +1,35 @@
 const CROPS = {
   bumpertato: {
+    id: 1,
+    name: 'Bumpertato',
     cost: 2,
     maturity: 4,
     yield: 4,
   },
   learnip: {
+    id: 2,
+    name: 'Learnip',
     cost: 4,
     maturity: 6,
     yield: 6,
   },
   cobbob: {
+    id: 3,
+    name: 'Cobb-ob',
     cost: 6,
     maturity: 8,
     yield: 8,
   },
   pupkin: {
+    id: 4,
+    name: 'Pupkin',
     cost: 8,
     maturity: 10,
     yield: 10,
   },
   drawberry: {
+    id: 5,
+    name: 'Drawberry',
     cost: 10,
     maturity: 12,
     yield: 12,
@@ -29,13 +39,14 @@ const CROPS = {
 export default class Crop {
   constructor(type) {
     if (type && type in CROPS) {
-      this.name = `${type[0].toUpperCase}${type.slice(1)}`;
-      this.cost = CROPS[type].cost;
-      this.maturity = CROPS[type].maturity;
-      this.yield = CROPS[type].yield;
+      Object.assign(this, ...CROPS[type])
     } else {
       this.name = 'empty';
-      this.cost = this.maturity = this.yield = undefined;
+      this.id = this.cost = this.maturity = this.yield = undefined;
     }
+  }
+
+  static cropInfo() {
+    return CROPS;
   }
 }
