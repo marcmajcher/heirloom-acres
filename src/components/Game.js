@@ -56,7 +56,21 @@ export default function GameView(props) {
     } ${(inday % 28) + 1}`;
   }
 
-  function processMorning() {}
+  function processMorning() {
+    const newGardens = { ...gardens };
+    for (const gardenId in newGardens) {
+      newGardens[gardenId] = newGardens[gardenId].map((plot) => {
+        const newPlot = plot;
+        // const newPlot =  {...plot }; // wtf
+        if (plot.crop.id !== undefined && plot.growth < plot.crop.maturity) {
+          newPlot.growth += 1;
+          // console.log(plot);
+          // console.log(newPlot);
+        }
+        return newPlot;
+      });
+    }
+  }
 
   function plantCrop(gardenId, plotNumber, cropId) {
     const crop = Crop.cropById(cropId);
