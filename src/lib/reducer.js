@@ -1,5 +1,5 @@
 import Crop from '../model/Crop';
-import { getDate, isWeekDay } from '../lib/util';
+import { getDate, getWeekDay } from '../lib/util';
 import produce from 'immer';
 
 const START_GOLD = 12;
@@ -24,8 +24,8 @@ const DEFAULT_STATE = {
   day: 1,
   gardens: INITIAL_GARDENS,
   gold: START_GOLD,
-  playerName: '',
-  playing: false,
+  playerName: 'Marc',
+  playing: true,
   renovations: INITIAL_RENOVATIONS,
 };
 
@@ -54,11 +54,15 @@ export default function reducer(state = DEFAULT_STATE, action) {
       });
 
     case 'NEXT_DAY':
-      // increase day/date, increase maturity for all crops 
+      // increase day/date, increase maturity for all crops
       return produce(state, (draft) => {
         draft.day += 1;
         draft.date = getDate(draft.day);
-        if (isWeekDay(state.day)) {
+        const weekday = getWeekDay(draft.day);
+
+        if (weekday === 'Saturday') {
+        } else if (weekday === 'Sunday') {
+        } else {
           for (const plotId in draft.gardens) {
             draft.gardens[plotId].forEach((plot) => {
               if (
