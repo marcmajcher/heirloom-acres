@@ -23,8 +23,8 @@ const DEFAULT_STATE = {
   day: 1,
   gardens: INITIAL_GARDENS,
   gold: START_GOLD,
-  playerName: 'Marc', //'',
-  playing: true, //false,
+  playerName: '',
+  playing: false,
   renovations: INITIAL_RENOVATIONS,
 };
 
