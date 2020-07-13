@@ -1,5 +1,6 @@
 import Crop from '../model/Crop';
-import { getDate, harvest, plantCrop, growCrops } from '../lib/util';
+import { getDate, isWeekDay } from '../lib/util';
+import produce from 'immer';
 
 const START_GOLD = 12;
 const INITIAL_RENOVATIONS = {
@@ -33,29 +34,56 @@ export default function reducer(state = DEFAULT_STATE, action) {
 
   switch (action.type) {
     case 'HARVEST':
-      const [newGardens, newGold] = harvest(state, action);
-      return { ...state, gardens: newGardens, gold: newGold };
+      // increase gold by harvest dice, empty out plot
+      return produce(state, (draft) => {
+        const { gardenId, plotId } = action;
+        draft.gold =
+          state.gold +
+          Math.floor(
+            Math.random() * state.gardens[gardenId][plotId].crop.yield
+          ) +
+          1;
+        draft.gardens[gardenId][plotId] = EMPTY_PLOT();
+      });
+
     case 'PLANT_CROP':
-      return {
-        ...state,
-        gardens: plantCrop(state, action),
-        gold: state.gold - action.crop.cost,
-      };
+      return produce(state, (draft) => {
+        const { gardenId, plotId, crop } = action;
+        draft.gardens[gardenId][plotId] = { crop, growth: 1 };
+        draft.gold = state.gold - crop.cost;
+      });
+
     case 'NEXT_DAY':
-      return {
-        ...state,
-        gardens: growCrops(state),
-        day: state.day + 1,
-        date: getDate(state.day + 1),
-      };
+      // increase day/date, increase maturity for all crops 
+      return produce(state, (draft) => {
+        draft.day += 1;
+        draft.date = getDate(draft.day);
+        if (isWeekDay(state.day)) {
+          for (const plotId in draft.gardens) {
+            draft.gardens[plotId].forEach((plot) => {
+              if (
+                plot.crop.id !== undefined &&
+                plot.growth < plot.crop.maturity
+              ) {
+                plot.growth += 1;
+              }
+            });
+          }
+        }
+      });
+
     case 'RESET_GAME':
       return DEFAULT_STATE;
+
     case 'SET_GOLD':
       return { ...state, gold: action.gold };
+
     case 'SET_PLAYER_NAME':
       return { ...state, playerName: action.name };
+
     case 'START_GAME':
       return { ...state, playing: true };
+
     default:
       return state;
   }
