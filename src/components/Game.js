@@ -40,6 +40,7 @@ export default function GameView(props) {
       ) : (
         'Something is terribly wrong.'
       )}
+
       {renovations.SMALL_GARDEN ? (
         <div>
           <h4>Small Garden</h4>
@@ -53,6 +54,19 @@ export default function GameView(props) {
         <div>
           <h4>Large Garden</h4>
           <Garden plots={gardens.large} gardenId="large"></Garden>
+        </div>
+      )}
+
+      {renovations.COMPOST && (
+        <div>
+          <h4>Composting Pile</h4>
+          <button className="u-pull-right">Buy Upgrade</button>
+        </div>
+      )}
+      {renovations.FAIRY_SHRINE && (
+        <div>
+          <h4>Composting Pile</h4>
+          <button className="u-pull-right">Buy Upgrade</button>
         </div>
       )}
     </div>
